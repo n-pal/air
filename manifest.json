@@ -1,0 +1,15 @@
+{
+  "domain": "air",
+  "name": "AC",
+  "documentation": "https://github.com/",
+  "dependencies": [],
+  "version": "1.0",
+  "config_flow": true,
+  "files": [
+      "__init__.py",
+      "climate.py",
+      "manifest.json","service.yaml"
+      
+    ],
+    "requirements":["tuya-connector-python"]
+}
