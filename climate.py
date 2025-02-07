@@ -4,14 +4,15 @@ import json
 import logging
 from homeassistant.components.climate import ClimateEntity, PLATFORM_SCHEMA
 from homeassistant.const import (
-    STATE_ON, STATE_OFF, TEMP_CELSIUS, ATTR_TEMPERATURE, PRECISION_WHOLE, STATE_UNAVAILABLE
+    STATE_ON, STATE_OFF, UnitOfTemperature, ATTR_TEMPERATURE, PRECISION_WHOLE, STATE_UNAVAILABLE
 )
 from datetime import timedelta
 
 from homeassistant.components.climate.const import (
-    HVAC_MODE_OFF, SUPPORT_TARGET_TEMPERATURE, SUPPORT_PRESET_MODE,
-    SUPPORT_TARGET_TEMPERATURE_RANGE, SUPPORT_FAN_MODE, SUPPORT_SWING_MODE,ATTR_HVAC_MODE, HVAC_MODES, HVACMode, FAN_LOW, FAN_AUTO, FAN_HIGH, FAN_MEDIUM
+    HVACMode, ClimateEntityFeature, ATTR_HVAC_MODE,
+    FAN_LOW, FAN_AUTO, FAN_HIGH, FAN_MEDIUM
 )
+
 from homeassistant.helpers import config_validation as cv
 import voluptuous as vol
 from homeassistant.const import (
@@ -36,11 +37,11 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
 SUPPORT_FLAGS = (
-    SUPPORT_TARGET_TEMPERATURE
-    | SUPPORT_PRESET_MODE
-    | SUPPORT_TARGET_TEMPERATURE_RANGE
-    | SUPPORT_FAN_MODE
-    | SUPPORT_SWING_MODE
+    ClimateEntityFeature.TARGET_TEMPERATURE
+    | ClimateEntityFeature.PRESET_MODE
+    | ClimateEntityFeature.TARGET_TEMPERATURE_RANGE
+    | ClimateEntityFeature.FAN_MODE
+    | ClimateEntityFeature.SWING_MODE
 )
 
 def setup_platform(hass, config, add_entities, discovery_info=None):
@@ -70,7 +71,7 @@ class TuyaClimate(ClimateEntity):
         self._fan_mode = None
         self._swing_mode = None
         self._attr_precision = PRECISION_WHOLE
-        self._hvac_mode = HVAC_MODE_OFF
+        self._hvac_mode = HVACMode.OFF
         self._target_temperature = 21
         self._precision = 1
         self._attr_supported_features = SUPPORT_FLAGS
@@ -105,7 +106,7 @@ class TuyaClimate(ClimateEntity):
 
     @property
     def temperature_unit(self):
-        return TEMP_CELSIUS
+        return UnitOfTemperature.CELSIUS
     
     @property
     def target_temperature(self):
